@@ -11,7 +11,7 @@ package com.hermes.bus.config;
  * This AIDL provide application the ability to "call" CoreAppService
  * Author: KevinZeng
  */
-import com.hermes.bus.config.IOcaAppListener;
+import com.hermes.bus.config.IBusListener;
 import com.hermes.bus.config.communication.OverProcessMessage;
 
 interface IBusConnection {
@@ -23,7 +23,7 @@ interface IBusConnection {
 	/**
 	 * Set the callback connection from service to App
 	 */
-	boolean setListener(String identifierName, int clientId, IOcaAppListener listener);
+	boolean setListener(String identifierName, int clientId, IBusListener listener);
 
 	/**
 	 * An application may have one or more clients which all need register on service.
@@ -59,7 +59,7 @@ interface IBusConnection {
 	/**
 	 * get a client's listener
 	 */
-	IOcaAppListener getClientListener(in int calleeClientIdentifier, in int callerClientIdentifier);
+	IBusListener getClientListener(in int calleeClientIdentifier, in int callerClientIdentifier);
 	
 	/* ************************************************************************
 	 * Function for client which sends client data notification
