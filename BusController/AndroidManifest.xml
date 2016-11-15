@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hermes.buscontroller"
+    android:installLocation="internalOnly"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="19" />
+    <!-- Require System Permission -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- New Permission For Service Binding -->
+    <!--permission
+        android:name="hermes.bus.permission.ACCESS_BUSSERVICE"
+        android:protectionLevel="normal" /-->
+
+    <application
+        android:name=".BusApplication"
+        android:allowBackup="false"
+        android:persistent="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <!-- BusControllerService Definition -->
+        <service
+            android:name="com.hermes.buscontroller.BusControllerService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.hermes.buscontroller.BusControllerService.STARTSELF" />
+            </intent-filter>
+        </service>
+
+        <!-- Receiver to start BusControllerService -->
+        <receiver android:name="com.hermes.buscontroller.receiver.ReceiverOfStartService" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.hermes.buscontroller.STARTSERVICE" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

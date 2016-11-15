@@ -1,0 +1,123 @@
+buildscript {
+
+    repositories {
+        maven {
+            url "$mavenurl"
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+/* ************************************************************
+ * For Android Build
+ */
+
+apply plugin: 'com.android.application'
+
+repositories {
+    maven {
+        url "$mavenurl"
+    }
+}
+
+dependencies {
+    compile 'com.hermes.bus.master:BusConfig:0.0.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+
+    compileSdkVersion 19
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+
+    signingConfigs {
+        release {
+            File strFile = new File("../../../../tools/Android/Security/General/platform.keystore")
+            storeFile file(strFile)
+            keyAlias 'platform'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+        debug {
+            File strFile = new File("../../../../tools/Android/Security/General/platform.keystore")
+            storeFile file(strFile)
+            keyAlias 'platform'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("../../../../../tools/Android/Security/proguard-android.txt")
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+  
+/* ************************************************************
+ * For Release
+ */
+apply plugin: 'maven' 
+
+uploadArchives {
+    repositories {  
+        mavenDeployer {
+            repository(url:"$mavenreleaseurl") {
+                authentication(userName:uploaduser, password:uploadpass)
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }  
+    }  
+}
+
+task release2Package(type: Copy){
+    from "${project.buildDir}/outputs/apk/${project.name}-release.apk"
+    into "../../../../Release/GeneralPackage/"
+
+    doFirst{
+        println "..........................................."
+        // Check if the release apk is exist
+        if(!file("${project.buildDir}/outputs/apk/${project.name}-release.apk").exists()){
+            throw new GradleException("Required release apk!")
+        }
+    }
+    doLast{
+        println "Compile SDK Version: ${android.compileSdkVersion}"
+        println "Build Tool Version: ${android.buildToolsVersion}"
+        println "versionCode: ${android.defaultConfig.versionCode}"
+        println "Project Name: ${project.name}-release.apk"
+        println "Project Root: ${project.buildDir}"
+
+        println "..........................................."
+    }
+}
