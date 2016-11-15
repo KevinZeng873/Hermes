@@ -4,9 +4,13 @@ Hermes is a software bus to help a bunch of processes communcate each other. Thi
 
 ## Android Version
 
-Components: Bus Controller, Bus SDK and Bus Configuration
+Components: BusController, BusApi and BusConfig
 
-### Bus SDK
+###BusConfig
+
+Configurations for Hermes Bus
+
+### BusApi
 
 Provide features:
 
@@ -18,7 +22,7 @@ Provide features:
 
 * Sync-Call between two processes
 
-### Bus Controller
+### BusController
 
 Provides features:
 
