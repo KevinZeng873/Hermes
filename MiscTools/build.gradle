@@ -1,0 +1,75 @@
+buildscript {
+
+    repositories {
+        maven {
+            url "$mavenurl"
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+/* 
+ * For Android Build - Library
+ */
+
+apply plugin: 'com.android.library'
+
+repositories {
+    maven {
+        url "$mavenurl"
+    }
+}
+
+dependencies {
+    
+}
+
+android {
+
+    compileSdkVersion 19
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+}
+
+/*
+ * For Release
+ */
+apply plugin: 'maven' 
+
+uploadArchives {
+	repositories {  
+        mavenDeployer {
+            repository(url:"$mavenreleaseurl") {
+				authentication(userName:uploaduser, password:uploadpass)
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }  
+    }  
+}
+
+// 避免使用snapshot无法同步更新
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
