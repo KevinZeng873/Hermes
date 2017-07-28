@@ -1,6 +1,7 @@
 # Hermes
 
-Hermes is a software bus to help a bunch of processes communcate each other. This first version is for Android.
+Hermes is a software bus to help a bunch of processes communcate each other. The name, Hermes, is a god of Greece who sends messages among Gods.
+This first version is for Android.
 
 ## Android Version
 
