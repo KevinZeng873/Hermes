@@ -7,7 +7,7 @@ This first version is for Android.
 
 Components: BusController, BusApi and BusConfig
 
-###BusConfig
+### BusConfig
 
 Configurations for Hermes Bus
 
